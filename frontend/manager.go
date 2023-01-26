@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gorilla/websocket"
@@ -21,5 +22,17 @@ func NewManager() *Manager {
 }
 
 func (m *Manager) serveWS(w http.ResponseWriter, r *http.Request) {
+	log.Println("new connection")
+
+	// upgrade http connection into websocket
+
+	conn, err := websocketUpgrader.Upgrade(w, r, nil)
+
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	conn.Close()
 
 }
