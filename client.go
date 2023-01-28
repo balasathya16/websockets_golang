@@ -1,6 +1,10 @@
 package main
 
-import "github.com/gorilla/websocket"
+import (
+	"log"
+
+	"github.com/gorilla/websocket"
+)
 
 type ClientList map[*Client]bool
 
@@ -21,8 +25,11 @@ func (c *Client) readMessages() {
 		messageType, payload, err := c.connection.ReadMessage()
 
 		if err != nil {
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure)
 
+			log.Printf("error reading message: %v", err)
 		}
-
+			break
+		}
 	}
-}
+	}
