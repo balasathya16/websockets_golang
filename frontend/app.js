@@ -24,6 +24,10 @@ window.onload = function() {
         console.log("Websockets are supported");
         //connect to websockets 
         conn = new WebSocket("ws://" + document.location.host + "/ws");
+
+        conn.onmessage = function(evt) {
+            console.log(evt); 
+        }
     }
 
     else {

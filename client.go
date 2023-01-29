@@ -42,6 +42,10 @@ func (c *Client) readMessages() {
 			break
 		}
 
+		for wsclient := range c.manager.clients {
+			wsclient.egress <- payload
+		}
+
 		log.Println(messageType)
 		log.Println(string(payload))
 	}
@@ -56,8 +60,16 @@ func (c *Client) writeMessages() {
 		select {
 		case message, ok := <-c.egress:
 			if !ok {
-
+				if err := c.connection.WriteMessage(websocket.CloseMessage, nil); err != nil {
+					log.Println("connection closed: ", err)
+				}
+				return
 			}
+
+			if err := c.connection.WriteMessage(websocket.TextMessage, message); err != nil {
+				log.Printf("Failed to send message: %v", err)
+			}
+			log.Println("message sent")
 		}
 	}
 }
