@@ -22,7 +22,7 @@ type Manager struct {
 
 func NewManager() *Manager {
 	return &Manager{
-		client: make(ClientList),
+		clients: make(ClientList),
 	}
 }
 

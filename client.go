@@ -21,15 +21,23 @@ func NewClient(conn *websocket.Conn, manager *Manager) *Client {
 }
 
 func (c *Client) readMessages() {
+	defer func() {
+		// cleanup connection
+		c.manager.removeClient(c)
+
+	}()
 	for {
 		messageType, payload, err := c.connection.ReadMessage()
 
 		if err != nil {
-			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure)
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
 
-			log.Printf("error reading message: %v", err)
-		}
+				log.Printf("error reading message: %v", err)
+			}
 			break
 		}
+
+		log.Println(messageType)
+		log.Println(string(payload))
 	}
-	}
+}
