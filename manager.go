@@ -45,6 +45,7 @@ func (m *Manager) serveWS(w http.ResponseWriter, r *http.Request) {
 	// start client process
 
 	go client.readMessages()
+	go client.writeMessages()
 }
 
 func (m *Manager) addClient(client *Client) {
