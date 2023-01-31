@@ -26,6 +26,8 @@ func NewClient(conn *websocket.Conn, manager *Manager) *Client {
 	}
 }
 
+// need to revisit errors in marshalling
+
 func (c *Client) readMessages() {
 	defer func() {
 		// cleanup connection
@@ -46,13 +48,12 @@ func (c *Client) readMessages() {
 		var request Event
 
 		if err := json.Unmarshal(payload, &request); err != nil {
-			log.Printf("error marshalling event: %v", err)
-			break
+			log.Printf("error marshalling message: %v", err)
+			break // Breaking the connection here might be harsh xD
 		}
-
+		// Route the Event
 		if err := c.manager.routeEvent(request, c); err != nil {
-			log.Printf("error marshalling event: %v", err)
-
+			log.Println("Error handling message: ", err)
 		}
 	}
 }
@@ -72,7 +73,14 @@ func (c *Client) writeMessages() {
 				return
 			}
 
-			if err := c.connection.WriteMessage(websocket.TextMessage, message); err != nil {
+			data, err := json.Marshal(message)
+
+			if err != nil {
+				log.Println(err)
+				return
+			}
+
+			if err := c.connection.WriteMessage(websocket.TextMessage, data); err != nil {
 				log.Printf("Failed to send message: %v", err)
 			}
 			log.Println("message sent")
