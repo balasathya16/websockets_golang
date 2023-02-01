@@ -45,6 +45,7 @@ func (c *Client) readMessages() {
 			break
 		}
 
+		// errors here. expecting json but receiving text
 		var request Event
 
 		if err := json.Unmarshal(payload, &request); err != nil {
