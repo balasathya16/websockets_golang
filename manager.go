@@ -35,10 +35,7 @@ func NewManager() *Manager {
 
 // errors - need to revisit
 func (m *Manager) setupEventHandlers() {
-	m.handlers[EventSendMessage] = func(e Event, c *Client) error {
-		fmt.Println(e)
-		return nil
-	}
+	m.handlers[EventSendMessage] = SendMessage
 }
 
 func SendMessage(event Event, c *Client) error {

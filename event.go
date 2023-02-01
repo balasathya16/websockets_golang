@@ -3,7 +3,9 @@ package main
 import "encoding/json"
 
 type Event struct {
-	Type    string          `json:"type"`
+	// Type is the message type sent
+	Type string `json:"type"`
+	// Payload is the data Based on the Type
 	Payload json.RawMessage `json:"payload"`
 }
 
