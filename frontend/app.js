@@ -1,10 +1,6 @@
 var selectedchat = "general";
 
-/**
- * Event is used to wrap all messages Send and Recieved
- * on the Websocket
- * The type is used as a RPC
- * */
+// Event is used to wrap all messages Send and Recieved on the Websocket//
 class Event {
     // Each Event needs a Type
     // The payload is not required
@@ -13,11 +9,7 @@ class Event {
         this.payload = payload;
     }
 }
-/**
- * routeEvent is a proxy function that routes
- * events into their correct Handler
- * based on the type field
- * */
+
 function routeEvent(event) {
 
     if (event.type === undefined) {
@@ -34,21 +26,15 @@ function routeEvent(event) {
 
 }
 
-/**
- * changeChatRoom will update the value of selectedchat
- * and also notify the server that it changes chatroom
- * */
+
 function changeChatRoom() {
-    // Change Header to reflect the Changed chatroom
     var newchat = document.getElementById("chatroom");
     if (newchat != null && newchat.value != selectedchat) {
         console.log(newchat);
     }
     return false;
 }
-/**
- * sendMessage will send a new message onto the Chat
- * */
+
 function sendMessage() {
     var newmessage = document.getElementById("message");
     if (newmessage != null) {
@@ -57,20 +43,14 @@ function sendMessage() {
     return false;
 }
 
-/**
- * sendEvent
- * eventname - the event name to send on
- * payload - the data payload
- * */
+
 function sendEvent(eventName, payload) {
     // Create a event Object with a event named send_message
     const event = new Event(eventName, payload);
     // Format as JSON and send
     conn.send(JSON.stringify(event));
 }
-/**
- * Once the website loads, we want to apply listeners and connect to websocket
- * */
+
 window.onload = function () {
     // Apply our listener functions to the submit event on both forms
     // we do it this way to avoid redirects

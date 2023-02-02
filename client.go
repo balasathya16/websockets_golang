@@ -66,7 +66,6 @@ func (c *Client) readMessages() {
 	}
 }
 
-// writeMessages is a process that listens for new messages to output to the Client
 func (c *Client) writeMessages() {
 	defer func() {
 		// Graceful close if this triggers a closing
@@ -76,11 +75,11 @@ func (c *Client) writeMessages() {
 	for {
 		select {
 		case message, ok := <-c.egress:
-			// Ok will be false Incase the egress channel is closed
+
 			if !ok {
-				// Manager has closed this connection channel, so communicate that to frontend
+
 				if err := c.connection.WriteMessage(websocket.CloseMessage, nil); err != nil {
-					// Log that the connection is closed and the reason
+
 					log.Println("connection closed: ", err)
 				}
 				// Return to close the goroutine
@@ -89,9 +88,9 @@ func (c *Client) writeMessages() {
 			data, err := json.Marshal(message)
 			if err != nil {
 				log.Println(err)
-				return // closes the connection, should we really
+				return
 			}
-			// Write a Regular text message to the connection
+
 			if err := c.connection.WriteMessage(websocket.TextMessage, data); err != nil {
 				log.Println(err)
 			}
