@@ -40,7 +40,9 @@ func (c *Client) readMessages() {
 		log.Println(err)
 		return
 	}
-	// Loop Forever
+
+	c.connection.SetPongHandler(c.pongHandler)
+
 	for {
 
 		_, payload, err := c.connection.ReadMessage()
@@ -109,4 +111,9 @@ func (c *Client) writeMessages() {
 		}
 
 	}
+}
+
+func (c *Client) pongHandler(pongMsg string) error {
+	log.Println("pong")
+	return c.connection.SetReadDeadline(time.Now().Add(pongWait))
 }
