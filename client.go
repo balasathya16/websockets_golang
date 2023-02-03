@@ -3,8 +3,14 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"time"
 
 	"github.com/gorilla/websocket"
+)
+
+var (
+	pongWait     = 10 * time.Second
+	pingInterval = (pongWait * 9) / 10
 )
 
 type ClientList map[*Client]bool
@@ -26,10 +32,14 @@ func NewClient(conn *websocket.Conn, manager *Manager) *Client {
 
 func (c *Client) readMessages() {
 	defer func() {
-		// Graceful Close the Connection once this
-		// function is done
+
 		c.manager.removeClient(c)
 	}()
+
+	if err := c.connection.SetReadDeadline(time.Now().Add(pongWait)); err != nil {
+		log.Println(err)
+		return
+	}
 	// Loop Forever
 	for {
 
@@ -61,6 +71,8 @@ func (c *Client) writeMessages() {
 		c.manager.removeClient(c)
 	}()
 
+	ticker := time.NewTicker(pingInterval)
+
 	for {
 		select {
 		case message, ok := <-c.egress:
@@ -84,6 +96,16 @@ func (c *Client) writeMessages() {
 				log.Println(err)
 			}
 			log.Println("sent message")
+
+		case <-ticker.C:
+			log.Println("ping")
+
+			// Send a ping to the client
+
+			if err := c.connection.WriteMessage(websocket.PingMessage, []byte(``)); err != nil {
+				log.Println("write msg err: ", err)
+				return
+			}
 		}
 
 	}
