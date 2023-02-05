@@ -51,11 +51,39 @@ function sendEvent(eventName, payload) {
     conn.send(JSON.stringify(event));
 }
 
+
+
+function login(){
+let formData = {
+    "username": document.getElementById("username").value,
+    "password": document.getElementById("password").value
+}
+
+fetch("login", {
+    method: 'post',
+    body: JSON.stringify(formData),
+    mode: 'cors'
+}).then((response) => {
+    if(response.ok){
+        return response.json();
+    }else {
+        throw 'unauthorized user';
+    }
+}).then((data) => {
+    //authenticated now
+
+    connectWebSocket(data.otp);
+})
+
+}
+
+
 window.onload = function () {
     // Apply our listener functions to the submit event on both forms
     // we do it this way to avoid redirects
     document.getElementById("chatroom-selection").onsubmit = changeChatRoom;
     document.getElementById("chatroom-message").onsubmit = sendMessage;
+    document.getElementById("login-form").onsubmit = login
 
     // Check if the browser supports WebSocket
     if (window["WebSocket"]) {
