@@ -73,8 +73,41 @@ fetch("login", {
     //authenticated now
 
     connectWebSocket(data.otp);
-})
+}).catch((e) => { alert(e)});
+return false
+}
 
+
+function connectWebSocket(otp){
+// Check if the browser supports WebSocket
+if (window["WebSocket"]) {
+    console.log("supports websockets");
+    // Connect to websocket
+    conn = new WebSocket("ws://" + document.location.host + "/ws?otp=",otp);
+
+
+    conn.onopen = function (evt) {
+        document.getElementById("connection-header").innerHTML = "connected to web sockets"; 
+    }
+
+    conn.onclose = function (evt) {
+        document.getElementById("connection-header").innerHTML = "not connected to web sockets"; 
+    }
+
+    // Add a listener to the onmessage event
+    conn.onmessage = function (evt) {
+        console.log(evt);
+        // parse websocket message as JSON
+        const eventData = JSON.parse(evt.data);
+        // Assign JSON data to new Event Object
+        const event = Object.assign(new Event, eventData);
+        // Let router manage message
+        routeEvent(event);
+    }
+
+} else {
+    alert("Not supporting websockets");
+}
 }
 
 
@@ -85,24 +118,5 @@ window.onload = function () {
     document.getElementById("chatroom-message").onsubmit = sendMessage;
     document.getElementById("login-form").onsubmit = login
 
-    // Check if the browser supports WebSocket
-    if (window["WebSocket"]) {
-        console.log("supports websockets");
-        // Connect to websocket
-        conn = new WebSocket("ws://" + document.location.host + "/ws");
-
-        // Add a listener to the onmessage event
-        conn.onmessage = function (evt) {
-            console.log(evt);
-            // parse websocket message as JSON
-            const eventData = JSON.parse(evt.data);
-            // Assign JSON data to new Event Object
-            const event = Object.assign(new Event, eventData);
-            // Let router manage message
-            routeEvent(event);
-        }
-
-    } else {
-        alert("Not supporting websockets");
-    }
+    
 };
