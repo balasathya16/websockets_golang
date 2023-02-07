@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -65,6 +66,10 @@ func (m *Manager) loginHandler(w http.ResponseWriter, r *http.Request) {
 		Username string `json:"username"`
 		Password string `json:"password"`
 	}
+
+	var req userLoginRequest
+
+	err := json.NewDecoder(r.Body).Decode(&req)
 }
 
 func (m *Manager) serveWS(w http.ResponseWriter, r *http.Request) {
