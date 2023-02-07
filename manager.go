@@ -60,6 +60,13 @@ func (m *Manager) routeEvent(event Event, c *Client) error {
 	}
 }
 
+func (m *Manager) loginHandler(w http.ResponseWriter, r *http.Request) {
+	type userLoginRequest struct {
+		Username string `json:"username"`
+		Password string `json:"password"`
+	}
+}
+
 func (m *Manager) serveWS(w http.ResponseWriter, r *http.Request) {
 	log.Println("new connection")
 
