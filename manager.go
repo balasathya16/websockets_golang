@@ -76,6 +76,21 @@ func (m *Manager) loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	if req.Username == "Reddy" && req.Password == "123" {
+type response struct {
+	OTP string `json:"otp"`
+}
+
+otp := m.otps.NewOTP()
+
+resp := response{
+	OTP: otp.Key,
+}
+
+data, err := json.Marshal(resp)
+if err != nil 
+	}
+
 }
 
 func (m *Manager) serveWS(w http.ResponseWriter, r *http.Request) {
