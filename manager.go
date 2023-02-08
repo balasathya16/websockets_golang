@@ -61,15 +61,21 @@ func (m *Manager) routeEvent(event Event, c *Client) error {
 	}
 }
 
+// loginHandler is used to verify an user authentication and return a one time password
 func (m *Manager) loginHandler(w http.ResponseWriter, r *http.Request) {
+
 	type userLoginRequest struct {
 		Username string `json:"username"`
 		Password string `json:"password"`
 	}
 
 	var req userLoginRequest
-
 	err := json.NewDecoder(r.Body).Decode(&req)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
 }
 
 func (m *Manager) serveWS(w http.ResponseWriter, r *http.Request) {
