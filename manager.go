@@ -77,19 +77,28 @@ func (m *Manager) loginHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if req.Username == "Reddy" && req.Password == "123" {
-type response struct {
-	OTP string `json:"otp"`
-}
+		type response struct {
+			OTP string `json:"otp"`
+		}
 
-otp := m.otps.NewOTP()
+		otp := m.otps.NewOTP()
 
-resp := response{
-	OTP: otp.Key,
-}
+		resp := response{
+			OTP: otp.Key,
+		}
 
-data, err := json.Marshal(resp)
-if err != nil 
+		data, err := json.Marshal(resp)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		w.Write(data)
+		return
 	}
+
+	w.WriteHeader(http.StatusUnauthorized)
 
 }
 
