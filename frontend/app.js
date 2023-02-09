@@ -83,7 +83,7 @@ function connectWebSocket(otp){
 if (window["WebSocket"]) {
     console.log("supports websockets");
     // Connect to websocket
-    conn = new WebSocket("ws://" + document.location.host + "/ws?otp=",otp);
+    conn = new WebSocket("ws://" + document.location.host + "/ws?otp="+otp);
 
 
     conn.onopen = function (evt) {

@@ -103,6 +103,18 @@ func (m *Manager) loginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *Manager) serveWS(w http.ResponseWriter, r *http.Request) {
+
+	otp := r.URL.Query().Get("otp")
+	if otp == "" {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+	if !m.otps.VerifyOTP(otp) {
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
 	log.Println("new connection")
 
 	// upgrade http connection into websocket

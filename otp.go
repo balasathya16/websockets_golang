@@ -28,7 +28,7 @@ func (rm RetentionMap) NewOTP() OTP {
 		Created: time.Now(),
 	}
 
-	rm[o.Key] = 0
+	rm[o.Key] = o
 	return o
 }
 
