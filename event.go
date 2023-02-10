@@ -1,6 +1,9 @@
 package main
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"time"
+)
 
 type Event struct {
 	Type string `json:"type"`
@@ -18,4 +21,9 @@ const (
 type SendMessageEvent struct {
 	Message string `json:"message"`
 	From    string `json:"from"`
+}
+
+type NewmessageEvent struct {
+	SendMessageEvent
+	Sent time.Time `json:"sent"`
 }
