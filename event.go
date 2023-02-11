@@ -16,6 +16,7 @@ type EventHandler func(event Event, c *Client) error
 const (
 	// EventSendMessage is the event name for new chat messages sent
 	EventSendMessage = "send_message"
+	EventNewMessage  = "new_message"
 )
 
 type SendMessageEvent struct {

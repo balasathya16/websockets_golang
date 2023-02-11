@@ -64,6 +64,11 @@ func SendMessage(event Event, c *Client) error {
 	if err != nil {
 		return fmt.Errorf("failed to marshal broadcast message: %v", err)
 	}
+
+	outgoingEvent := Event{
+		Payload: data,
+		Type:    EventNewMessage,
+	}
 	return nil
 }
 
