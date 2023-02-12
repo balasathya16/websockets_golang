@@ -10,6 +10,21 @@ class Event {
     }
 }
 
+class SendMessageEvent {
+    constructor(message, from) {
+        this.message = message;
+        this.from = from;
+    }
+}
+
+class NewMessageEvent {
+    constructor(message, from, sent) {
+        this.message = message;
+        this.from = from;
+        this.sent = sent; 
+    }
+}
+
 function routeEvent(event) {
 
     if (event.type === undefined) {
@@ -17,7 +32,7 @@ function routeEvent(event) {
     }
     switch (event.type) {
         case "new_message":
-            console.log("new message");
+            const messageEvent = Object.assign(NewMessageEvent, event.payload)
             break;
         default:
             alert("unsupported message type");
@@ -38,6 +53,7 @@ function changeChatRoom() {
 function sendMessage() {
     var newmessage = document.getElementById("message");
     if (newmessage != null) {
+        let outgoingEvent = new SendMessageEvent(newmessage.value, "Reddy");
         sendEvent("send_message", newmessage.value)
     }
     return false;

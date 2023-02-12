@@ -69,6 +69,10 @@ func SendMessage(event Event, c *Client) error {
 		Payload: data,
 		Type:    EventNewMessage,
 	}
+
+	for client := range c.manager.clients {
+		client.egress <- outgoingEvent
+	}
 	return nil
 }
 
