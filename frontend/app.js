@@ -59,6 +59,15 @@ function sendMessage() {
     return false;
 }
 
+function appendChatMessage(messageEvent) {
+    var date = new Date(messageEvent.sent);
+    const formattedMsg = `${date.toLocaleString()}: ${messageEvent.message}`;
+
+    textarea = document.getElementById('chatmessages'); 
+    textarea.innerHTML = textarea.innerHTML + "\n" + formattedMsg;
+    textarea.scrollTop = textarea.scrollHeight; 
+}
+
 
 function sendEvent(eventName, payload) {
     // Create a event Object with a event named send_message
