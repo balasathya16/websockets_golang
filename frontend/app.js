@@ -33,6 +33,7 @@ function routeEvent(event) {
     switch (event.type) {
         case "new_message":
             const messageEvent = Object.assign(NewMessageEvent, event.payload)
+            appendChatMessage(messageEvent)
             break;
         default:
             alert("unsupported message type");
@@ -54,7 +55,7 @@ function sendMessage() {
     var newmessage = document.getElementById("message");
     if (newmessage != null) {
         let outgoingEvent = new SendMessageEvent(newmessage.value, "Reddy");
-        sendEvent("send_message", newmessage.value)
+        sendEvent("send_message", outgoingEvent);
     }
     return false;
 }
