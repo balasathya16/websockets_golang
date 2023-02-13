@@ -37,8 +37,14 @@ function changeChatRoom() {
         selectedchat = newChat.value;
         header = document.getElementById("chat-header").innerHTML = "You are currently in " + selectedchat; 
 
+        let changeEvent = new changeChatRoomEvent(selectedchat);
 
-        
+        sendEvent("change_room", changeEvent)
+
+        textarea = document.getElementById('chatmessages'); 
+        textarea.innerHTML = `Your chat room is currently: ${selectedchat}`
+
+
     }
 }
 
@@ -59,14 +65,6 @@ function routeEvent(event) {
 
 }
 
-
-function changeChatRoom() {
-    var newchat = document.getElementById("chatroom");
-    if (newchat != null && newchat.value != selectedchat) {
-        console.log(newchat);
-    }
-    return false;
-}
 
 function sendMessage() {
     var newmessage = document.getElementById("message");
