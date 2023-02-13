@@ -25,6 +25,23 @@ class NewMessageEvent {
     }
 }
 
+class changeChatRoomEvent {
+    constructor(name) {
+        this.name = name; 
+    }
+}
+
+function changeChatRoom() {
+    var newChat = document.getElementById("chatroom");
+    if (newChat != null && newChat.value != selectedchat) {
+        selectedchat = newChat.value;
+        header = document.getElementById("chat-header").innerHTML = "You are currently in " + selectedchat; 
+
+
+        
+    }
+}
+
 function routeEvent(event) {
 
     if (event.type === undefined) {
