@@ -39,9 +39,13 @@ func NewManager(ctx context.Context) *Manager {
 	return m
 }
 
-// errors - need to revisit
 func (m *Manager) setupEventHandlers() {
 	m.handlers[EventSendMessage] = SendMessage
+	m.handlers[EventChangeRoom] = ChatRoomHandler
+}
+
+func ChatRoomHandler(event *Event, c *Client) error {
+
 }
 
 func SendMessage(event Event, c *Client) error {
