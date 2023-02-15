@@ -44,8 +44,15 @@ func (m *Manager) setupEventHandlers() {
 	m.handlers[EventChangeRoom] = ChatRoomHandler
 }
 
-func ChatRoomHandler(event *Event, c *Client) error {
+func ChatRoomHandler(event Event, c *Client) error {
+	var ChangeRoomEvent ChangeRoomEvent
 
+	if err := json.Unmarshal(event.Payload, &ChangeRoomEvent); err != nil {
+		return fmt.Errorf("bay payload in request: %v", err)
+	}
+	c.chatroom = ChangeRoomEvent.Name
+
+	return nil
 }
 
 func SendMessage(event Event, c *Client) error {
