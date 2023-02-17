@@ -46,6 +46,7 @@ function changeChatRoom() {
 
 
     }
+    return false; 
 }
 
 function routeEvent(event) {
