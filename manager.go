@@ -82,7 +82,10 @@ func SendMessage(event Event, c *Client) error {
 	}
 
 	for client := range c.manager.clients {
-		client.egress <- outgoingEvent
+		if client.chatroom == c.chatroom {
+			client.egress <- outgoingEvent
+
+		}
 	}
 	return nil
 }
